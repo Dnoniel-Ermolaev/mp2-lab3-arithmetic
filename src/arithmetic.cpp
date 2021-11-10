@@ -336,11 +336,16 @@ void Lexem::PolskaZapis()
             }
             Size = Size - colSkob;
             POINT = true;
+
+            delete[] MyLexema1;
+            delete[] Prior1;
     }
     for (int i = 0; i < Size; i++)
     {
         Polskastring = Polskastring + MyLexema[i];
     }
+
+   
 }
 
 double Lexem::Convert_str_to_double(string s)
@@ -397,7 +402,10 @@ double Lexem::CALC()
                 if (MyLexema[i] == "^") { RES.Include(pow(y, x)); }
             }
         }
+       
     }
+    delete[] M1;
+    delete[] M2;
     return RES.Exclude();
 }
 
