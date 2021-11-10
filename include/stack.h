@@ -147,6 +147,7 @@ inline void TStack<ValType>::OverFlow()
 		{
 			MyStack[i] = MyStack2[i];
 		}
+		delete MyStack2;
 	}
 }
 

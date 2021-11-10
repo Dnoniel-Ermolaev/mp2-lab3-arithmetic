@@ -1,8 +1,12 @@
 ﻿// тесты для вычисления арифметических выражений
-#include <gtest.h>
-#include "..\include\arithmetic.h"
 #include "..\include\arithmetic.h"
 #include <gtest.h>
+#include <string>
+#include "cstdlib"
+#include <iostream>
+#include <cmath>
+#include <iomanip>
+
 
 TEST(Lexem, can_create_Lexema)
 {
@@ -48,6 +52,60 @@ TEST(Lexem, correct_divide_operation_2) {
 	L.Preparestr();
 	L.Divide();
 	EXPECT_EQ("234", L.MyLexema[8]);
+}
+TEST(Lexem, correct_divide_operation_3) {
+	Lexem L("5+3-6+sqrt(234)+-1.00000005+0,5^2+sin(5)");
+	L.Preparestr();
+	L.Divide();
+	EXPECT_EQ("0.5", L.MyLexema[13]);
+}
+TEST(Lexem, correct_divide_operation_4) {
+	Lexem L("5+3-6+sqrt(234)+-1.00000005+0,5^2+sin(5)");
+	L.Preparestr();
+	L.Divide();
+	EXPECT_EQ("0.5", L.MyLexema[13]);
+}
+TEST(Lexem, correct_divide_operation_5) {
+	Lexem L("5+3-6+sqrt(234)+-1.00000005+0,5^2+sin(5)");
+	L.Preparestr();
+	L.Divide();
+	EXPECT_EQ("^", L.MyLexema[14]);
+}
+TEST(Lexem, correct_divide_operation_6) {
+	Lexem L("5+3-6+sqrt(234)+-1.00000005+0,5^2+sin(5)");
+	L.Preparestr();
+	L.Divide();
+	EXPECT_EQ("sin", L.MyLexema[17]);
+}
+TEST(Lexem, correct_divide_operation_7) {
+	Lexem L("sqrt(sin((cos(0))^2)");
+	L.Preparestr();
+	L.Divide();
+	EXPECT_EQ("sqrt", L.MyLexema[0]);
+}
+TEST(Lexem, correct_divide_operation_8) {
+	Lexem L("sqrt(sin((cos(0))^2)");
+	L.Preparestr();
+	L.Divide();
+	EXPECT_EQ("sin", L.MyLexema[2]);
+}
+TEST(Lexem, correct_divide_operation_9) {
+	Lexem L("sqrt(sin((cos(0))^2)");
+	L.Preparestr();
+	L.Divide();
+	EXPECT_EQ("cos", L.MyLexema[5]);
+}
+TEST(Lexem, correct_divide_operation_10) {
+	Lexem L("sqrt(sin((cos(0))^2)");
+	L.Preparestr();
+	L.Divide();
+	EXPECT_EQ("0", L.MyLexema[7]);
+}
+TEST(Lexem, correct_divide_operation_11) {
+	Lexem L("sqrt(sin((cos(0))^2)");
+	L.Preparestr();
+	L.Divide();
+	EXPECT_EQ("^", L.MyLexema[10]);
 }
 TEST(Lexem, correct_check_Skob_1)
 {
@@ -252,20 +310,20 @@ TEST(Lexem, right_convert_in_Polish_entry)
 		test += L.MyLexema[i];
 	}
 	EXPECT_EQ(a,test);
+}
 
+TEST(Lexem, right_convert_in_Polish_entry_2)
+{
+	Lexem L("");
+	string a;
 	L.GetString("(1+2)*(3/4^5)+sin(x)");
 	a = "12+345^/*xsin+";
 	L.Preparestr();
 	L.Divide();
 	L.PolskaZapis();
-	string test2;
-
-	for (int i = 0; i < L.Size; i++)
-	{
-		test2 = test2 + L.MyLexema[i];
-	}
-	EXPECT_EQ(a, test2);
+	EXPECT_EQ(a,L.Polskastring);
 }
+
 
 TEST(Lexem, rigt_converte_int) {
 	Lexem L("123512462346");
@@ -288,21 +346,21 @@ TEST(Lexem, right_calculation_Lexema_1)
 	Lexem L("(62+3)*936-22");
 	L.Preparestr();
 	L.Divide();
-	EXPECT_EQ(L.CALC(), (62 + 3) * 936 - 22);
+	EXPECT_EQ((62.0 + 3.0) * 936.0 - 22.0,L.CALC());
 }
 TEST(Lexem, right_calculation_Lexema_with_negative_numbers)
 {
 	Lexem L("(-2+3)*936-22");
 	L.Preparestr();
 	L.Divide();
-	EXPECT_EQ(L.CALC(), (-2 + 3) * 936 - 22);
+	EXPECT_EQ((-2.0 + 3.0) * 936.0 - 22.0,L.CALC());
 }
 TEST(Lexem, right_calculation_Lexema_with_function)
 {
 	Lexem L("(62+3)*sin(23)");
 	L.Preparestr();
 	L.Divide();
-	EXPECT_EQ(L.CALC(), (62 + 3) * sin(23));
+	EXPECT_EQ((62.0 + 3.0) * sin(23.0),L.CALC());
 }
 TEST(Lexem, right_accuracy_cos) {
 	Lexem L("cos(5)");
@@ -325,8 +383,10 @@ TEST(Lexem, right_accuracy_sqrt) {
 
 TEST(Lexem, right_calculation_Lexema_2)
 {
+	
 	Lexem L("((1232+11.6277)*(62/-3)/((5-3)^7.4)*sin(x+5))*5");
 	L.Preparestr();
 	L.Divide();
-	EXPECT_EQ(L.CALC(), 408.26072932231386);//ввести 7
+	L.r = 7.0;
+	EXPECT_EQ(408.26072932231386, L.CALC());//ввести 7
 }

@@ -12,6 +12,7 @@ class Lexem {
 public:
 	string a;
 	string* MyLexema;
+	string Polskastring;
 	int* Prior;
 	int Size;
 	double r=0.0;

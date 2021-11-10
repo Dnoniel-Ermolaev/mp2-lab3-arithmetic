@@ -39,6 +39,7 @@ void Lexem::GetString(string s)
         Prior[i] = -1;
     }
     MyLexema[0] = a;
+    Polskastring = "";
 }
 
 void Lexem::Preparestr()
@@ -335,6 +336,10 @@ void Lexem::PolskaZapis()
             }
             Size = Size - colSkob;
             POINT = true;
+    }
+    for (int i = 0; i < Size; i++)
+    {
+        Polskastring = Polskastring + MyLexema[i];
     }
 }
 
